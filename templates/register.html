@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>注册 · 南邮401私密会所</title>
+	<link rel="stylesheet" href="/static/css/login.css">
+{#	<link rel="stylesheet" href="/static/css/animate.css">#}
+	<!-- For-Mobile-Apps-and-Meta-Tags -->
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!-- //For-Mobile-Apps-and-Meta-Tags -->
+</head>
+
+<body>
+    <h1 class="wow fadeInDown" data-wow-duration="1.5s">南邮401私密会所</h1>
+    <div class="container w3 wow fadeInUp" data-wow-duration="1.5s">
+        <h2>欢迎注册</h2>
+        <span style="color: red">{{ request.session.msg }}</span>
+		<form action="/user/register/" method="post">
+			<div class="username">
+				<span class="username">昵称:</span>
+				<input type="text" name="nickname" class="name" placeholder="Enter your nickname" required="true">
+				<div class="clear"></div>
+			</div>
+			<div class="password-agileits">
+				<span class="username">密码:</span>
+				<input type="password" name="password1" class="password" placeholder="Enter your password" required="">
+				<div class="clear"></div>
+			</div>
+            <div class="password-agileits">
+				<span class="username">再次确认密码:</span>
+				<input type="password" name="password2" class="password" placeholder="Enter your password again" required="">
+				<div class="clear"></div>
+			</div>
+			<div class="login-w3">
+				<br><br>
+				<input type="submit" class="login" value="Register">
+			</div>
+			<div class="clear"></div>
+		</form>
+	</div>
+	<div class="footer-w3l">
+		<p> &copy; 2021 Simple Login Form. All Rights Reserved | Design by <a href="#" title="YORMNG">YORMNG</a></p>
+	</div>
+</body>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="/static/js/wow.min.js"></script>
+<script>
+	$(function () {
+		new WOW().init();
+	})
+</script>
+</html>
