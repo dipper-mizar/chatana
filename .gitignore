@@ -1,5 +1,6 @@
 venv
 prep.sh
+__pycache__
 
 update.txt
 
