@@ -1,6 +1,7 @@
 import os
 
 from django.core.asgi import get_asgi_application
+from django.utils.translation import gettext_lazy as _
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chat.settings')
 
@@ -17,7 +18,7 @@ async def websocket_application(scope, receive, send):
         elif message['type'] == 'websocket.disconnect':
             break
         elif message['type'] == 'websocket.receive':
-            print('收到信息:', message['text'])
+            print(_('Received message: '), message['text'])
             if message['text'] is not None:
                 # WebSocketHandler().asgi_send(send, message)
                 for sender in senders:
@@ -28,10 +29,11 @@ async def websocket_application(scope, receive, send):
         else:
             pass
 
+
 async def application(scope, receive, send):
     if scope['type'] == 'http':
         await http_application(scope, receive, send)
     elif scope['type'] == 'websocket':
         await websocket_application(scope, receive, send)
     else:
-        raise Exception('unknow scope type!')
+        raise Exception(_('Unknown scope type!'))

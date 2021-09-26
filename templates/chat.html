@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,13 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {#    <link rel="icon" href="https://www.easyicon.net/api/resizeApi.php?id=1281762&size=128">#}
     <link rel="stylesheet" href="{% static 'css/chat.css' %}" type="text/css">
-    <title>南邮401私密会所</title>
+    <title>{% trans "the Big Dipper" %}</title>
 </head>
 <body onbeforeunload="f()">
 <div class="container">
     <div class="header" style="background: black;height: 40px">
         <span id="nickname" style="text-align: center;vertical-align: center; display: block;padding-top: 9px;
-         font-weight: bold;color: white">{{ request.session.nickname }}<font style="color: lime"> · 当前在线</font>
+         font-weight: bold;color: white">{{ request.session.nickname }}<font style="color: lime"> · {% trans "Online" %}</font>
             </span>
     </div>
     <div class="body">
@@ -33,24 +34,25 @@
 
                 <ul>
                     <hr>
-                    <li style="margin-top: 20px;margin-bottom: 10px">在线人数： <span id="count"></span></li>
+                    <li style="margin-top: 20px;margin-bottom: 10px">{% trans "Online count: " %} <span id="count"></span></li>
                 </ul>
-                <button class="btn-send" onclick="logout()" style="">注销当前登录</button>
+                <button class="btn-send" onclick="logout()" style="">{% trans "Logout" %}</button>
             </div>
         </div>
         <div class="main">
             <div id="msg_view" class="info" style="padding: 30px; overflow: auto;"></div>
             <div class="send">
-                <textarea class="msg" placeholder="输入文字一起聊天吧" onkeydown="sendShortCut(event)"></textarea>
+                <textarea class="msg" placeholder="{% trans "Just chat here" %}" onkeydown="sendShortCut(event)"></textarea>
                 <div class="send-bottom">
-                    <span>Enter发送，ctrl+Enter换行</span>
-                    <button class="btn-send" onclick="sendBtn()">发送</button>
+                    <span>{% trans "Send by 'Enter' and change the next row by 'Ctrl+Enter'" %}</span>
+                    <button class="btn-send" onclick="sendBtn()">{% trans "Send" %}</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 </body>
+<script src="{% url 'jsi18n' %}"></script>
 <script type="text/javascript">
     var ws
     var ws_url = 'ws://localhost:8000/conn/'

@@ -1,48 +1,50 @@
 ﻿{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-	<title>登录 · 南邮401私密会所</title>
-	<link rel="stylesheet" href="{% static 'css/login.css' %}">
-{#	<link rel="stylesheet" href="/static/css/animate.css">#}
-	<!-- For-Mobile-Apps-and-Meta-Tags -->
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<!-- //For-Mobile-Apps-and-Meta-Tags -->
-</head>
+{% load i18n %}
 
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>{% trans 'Sign in to the Big Dipper' %}</title>
+
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
 <body>
-    <h1 class="wow fadeInDown" data-wow-duration="1.5s">南邮401私密会所</h1>
-    <div class="container w3 wow fadeInUp" data-wow-duration="1.5s">
-        <h2>欢迎登录</h2>
-        <span style="color: red">{{ request.session.msg }}</span>
-		<form action="/user/login/" method="post">
-			<div class="username">
-				<span class="username">昵称:</span>
-				<input type="text" name="nickname" class="name" placeholder="Enter your nickname" required="true">
-				<div class="clear"></div>
-			</div>
-			<div class="password-agileits">
-				<span class="username">密码:</span>
-				<input type="password" name="password" class="password" placeholder="Enter your password" required="">
-				<div class="clear"></div>
-			</div>
-			<div class="login-w3">
-				<br><br>
-				<input type="submit" class="login" value="Login">
-			</div>
-			<div class="clear"></div>
-		</form>
-	</div>
-	<div class="footer-w3l">
-		<p> &copy; 2021 Simple Login Form. All Rights Reserved | Design by <a href="#" title="YORMNG">YORMNG</a></p>
-	</div>
+<div class="container"
+     style="width: 400px;margin-top: 110px;padding: 20px;font-size: 14px;background-color: #f6f8fa;border: 1px solid #f6f8fa;border-radius: 10px;">
+    <h3 style="text-align: center;">{% trans 'Sign in to the Big Dipper' %}</h3><br>
+    <div class="alert alert-warning alert-dismissible" role="alert" {% if request.session.msg == None %} hidden="hidden"
+    {% endif %} >
+        <button type="button" class="close" data-dismiss="alert">
+            <span>&times;</span></button>
+        <strong>{{ request.session.msg }}</strong>
+    </div>
+    <form action="/user/login/" method="post">
+        <div class="form-group">
+            <label for="user">{% trans 'Username' %}</label>
+            <input type="text" name="nickname" class="form-control" id="user"
+                   placeholder="{% trans 'Please input u name' %}"/>
+        </div>
+
+        <div class="form-group">
+            <label for="password">{% trans 'Password' %}</label>
+            <input type="password" name="password" class="form-control" id="password"
+                   placeholder="{% trans 'Please input u password' %}"/>
+        </div>
+
+        <div class="form-inline">
+        </div>
+        <hr/>
+        <div class="form-group" style="text-align: center;">
+            <input class="btn btn btn-primary" type="submit" value="{% trans 'Sign in' %}">
+            <br><br>
+            New to here? <a href="/user/register/">Create an account.</a>
+        </div>
+    </form>
+</div>
 </body>
-<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="{% static 'js/wow.min.js' %}"></script>
-<script>
-	$(function () {
-		new WOW().init();
-	})
-</script>
+    <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 </html>

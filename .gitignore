@@ -1,0 +1,7 @@
+venv
+prep.sh
+
+update.txt
+
+/deploy/*
+!/deploy/uwsgi.ini

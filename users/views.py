@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.translation import gettext_lazy as _
 
 from users.models import Users
 
@@ -8,6 +9,7 @@ from users.models import Users
 @csrf_exempt
 def login(request):
     if request.method == "GET":
+        request.session['msg'] = None
         return render(request, 'login.html')
     elif request.method == "POST":
         try:
@@ -20,7 +22,7 @@ def login(request):
         request.session['nickname'] = request.POST.get('nickname')
         Users.objects.filter(name=request.POST.get('nickname')).update(status=True)
         return redirect('/chat/')
-    return HttpResponse("Unsupported method!")
+    return HttpResponse('Unsupported method!')
 
 
 def logout(request):

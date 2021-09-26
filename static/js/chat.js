@@ -1,40 +1,49 @@
 window.onload = function () {
+    // Load the chatting records
+    $.ajax({
+        type: 'GET',
+        url: '/load_records/',
+        async: false,
+        success: function (data) {
+            if (data.status != 'success') {
+                alert(gettext("Unknown error: ") + data.msg)
+            } else {
+                records = $.parseJSON(data.text)
+                var obj = eval(records)
+                for (var i = 0; i < obj.length; i++) {
+                    if (obj[i]['fields']['username'] == nickname) {
+                        addMsg(obj[i]['fields']['text'], 'enter', obj[i]['fields']['username'])
+                    } else if (obj[i]['fields']['username'] != nickname) {
+                        addMsg(obj[i]['fields']['text'], 'ret', obj[i]['fields']['username'])
+                    }
+                }
+            }
+        }
+    });
     ws = new WebSocket(ws_url)
     window.s = ws;
     ws.onopen = function () {
-        console.log('connect!')
-        var str = '【Auto reply】' + nickname + ', 加入房间。'
+        console.log(gettext('Connected!'))
+        var str = '【Auto reply】' + nickname + ', join the chat.'
         calc_count_person()
         addMsg(str)
-        sendServerMsg(str)
+        sendServerMsg(str, nickname)
     }
     ws.onmessage = function (e) {
         var str_and = e.data
         var nickname_ret = str_and.substr(str_and.lastIndexOf(" ") + 1)
-        if (nickname_ret == nickname || str_and.includes("Auto reply")) {
+        var index = str_and.lastIndexOf(" " + nickname_ret)
+        str = str_and.substring(0, index)
+        if (nickname_ret != nickname && str_and.includes("Auto reply")) {
+            addMsg(str, null, null)
             return
         }
         var str = str_and.replace(nickname_ret, "")
-        var joinreg = RegExp(',加入聊天')
-        var leavereg = RegExp(',离开聊天')
-
-        if (str.match(joinreg)) {
-            var person = str.substring(0, str.length - 5)
-            addPerson(person)
-            //calc_count_person()
-            addMsg(str)
-
-        } else if (str.match(leavereg)) {
-            var person = str.substring(0, str.length - 5)
-            subPerson(person)
-            addMsg(str)
-        } else {
-            addMsg(str, "ret", nickname_ret)
-        }
+        addMsg(str, "ret", nickname_ret)
 
     }
     ws.onclose = function (e) {
-        console.log("WebSocket已关闭")
+        console.log(gettext("Websocket has been closed."))
     }
 }
 
@@ -46,14 +55,14 @@ function f() {
 }
 
 function logout() {
-    var str = '【Auto reply】' + nickname + ',离开房间。'
+    var str = '【Auto reply】' + nickname + ', leave the chat.'
     if (window.s) {
-        sendServerMsg(str)
+        sendServerMsg(str, nickname)
         window.s.close()
-        console.log("WebSocket已关闭")
+        console.log(gettext("Websocket has been closed."))
         window.location.href = '/user/logout/?nickname=' + nickname;
     } else {
-        alert("未知错误！")
+        alert(gettext("Unknown error!"))
     }
 }
 
@@ -62,7 +71,7 @@ function sendBtn() {
     var msg = input.value;
     var str = msg
     if (!window.s) {
-        alert("WebSocket未连接！")
+        alert(gettext("Websocket has been closed."))
     } else {
         result = addMsg(str, "enter", nickname)
         if (result) {
@@ -76,7 +85,7 @@ function sendBtn() {
             async: true,
             success: function (data) {
                 if (data.status == 'fail') {
-                    alert("Unknown error: " + data.msg)
+                    alert(gettext("Unknown error: ") + data.msg)
                 }
             },
         });
@@ -95,7 +104,7 @@ function sendShortCut(event) {
             event.preventDefault()
             var str = msg
             if (!window.s) {
-                alert("WebSocket未连接")
+                alert(gettext("Websocket has been closed."))
             } else {
                 result = addMsg(str, "enter", nickname)
                 if (result) {
@@ -124,15 +133,10 @@ function addMsg(text, message_type, nickname) {
     var pic = document.createElement('p')
     var msg = document.createElement('p');
     var ele = document.getElementById("msg_view")
-    if (text.includes("Auto reply")) {
-        msg.setAttribute("style", "text-align: center;color: grey; font-size: 10px")
-        msg.innerText = text;
-        element.appendChild(msg)
-        return true
-    } else if (message_type == "ret") {
+    if (message_type == "ret") {
         msg.setAttribute("style", "text-align: left")
         pic.setAttribute("style", "text-align: left; margin-right: 82px;")
-        pic.innerHTML += "<img style='margin-right: 10px; height: 25px; width: 25px;' src='/static/images/default-userlogo-male.png'>" + nickname + ":"
+        pic.innerHTML += "<img style='margin-right: 10px; height: 25px; width: 25px;' src='/static/images/default-userlogo-male.png'>" + nickname
         msg.innerHTML += "<span style='padding: 10px; max-width: 100%; height: 20px; color: white; background-color:cornflowerblue; border: 2px solid; border-radius: 25px'>" + text + "</span>";
         element.appendChild(pic)
         element.appendChild(msg)
@@ -142,8 +146,14 @@ function addMsg(text, message_type, nickname) {
         msg.setAttribute("style", "text-align: right")
         pic.setAttribute("style", "text-align: right; height: 30px;")
         msg.innerHTML += "<span style='padding: 10px; max-width: 100%; height: 20px; color: white; background-color:cornflowerblue; border: 2px solid; border-radius: 25px'>" + text + "</span>";
-        pic.innerHTML += "<img style='margin-right: 10px; height: 25px; width: 25px;' src='/static/images/default-userlogo-male.png'>" + nickname + ":"
+        pic.innerHTML += "<img style='margin-right: 10px; height: 25px; width: 25px;' src='/static/images/default-userlogo-male.png'>" + nickname
         element.appendChild(pic)
+        element.appendChild(msg)
+        ele.scrollTop = ele.scrollHeight;
+        return true
+    } else {
+        msg.setAttribute("style", "text-align: center;color: grey; font-size: 10px")
+        msg.innerText = text;
         element.appendChild(msg)
         ele.scrollTop = ele.scrollHeight;
         return true

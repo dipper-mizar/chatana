@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.utils.translation import gettext_lazy as _
 
 connections = []
 senders = []
@@ -20,8 +21,8 @@ class WebSocketHandler:
                         try:
                             connection.send(message)
                         except Exception as e:
-                            return HttpResponse('Unknown error occurred '
-                                                'when server returned messages(expected)!')
+                            return HttpResponse(_('Unknown error occurred '
+                                                'when server returned messages(expected)!'))
 
     @staticmethod
     def asgi_send(send, message):
