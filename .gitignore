@@ -1,4 +1,4 @@
-.idea
+.idea/
 venv
 prep.sh
 /__pycache__/
