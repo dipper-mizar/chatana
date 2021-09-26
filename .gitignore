@@ -1,6 +1,7 @@
+.idea
 venv
 prep.sh
-__pycache__
+/__pycache__/
 
 update.txt
 
