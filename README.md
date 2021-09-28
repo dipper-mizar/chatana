@@ -18,7 +18,7 @@ I am not a front-end programmer.
 
 `We still have a long way to go.`
 
-You need to migrate the model files into your local database system:
+You need to migrate the model files into your local database system(sqlite3 by default):
 
 ```python
 $ sudo cd chatana
