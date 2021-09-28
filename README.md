@@ -25,6 +25,10 @@ $ sudo cd chatana
 $ sudo python manage.py makemigrations
 $ sudo python manage.py migrate
 ```
+And generate static files should be alright:
+```python
+$ sudo python manage.py collectstatic
+```
 
 At next time you can visit `Chatana` by `http://127.0.0.1:8000/chat/`. 
 

@@ -3,6 +3,7 @@ venv
 prep.sh
 __pycache__/
 migrations/
+/static/
 
 update.txt
 
