@@ -2,7 +2,7 @@
 venv
 prep.sh
 __pycache__/
-chat_socket/migrations/
+migrations/
 
 update.txt
 
