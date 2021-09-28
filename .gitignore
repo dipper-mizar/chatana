@@ -7,3 +7,5 @@ update.txt
 
 /deploy/*
 !/deploy/uwsgi.ini
+
+/db.sqlite3
